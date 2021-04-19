@@ -1,5 +1,5 @@
 import fuzzy_funcs
-
+import math as m
 import matplotlib.pyplot as plt
 
 class exemple(object):
@@ -16,13 +16,17 @@ class exemple(object):
 		elif (type == "t"):
 			self.f = fuzzy_funcs.t_func(self.U, self.a, self.b, self.c)
 		elif (type == "y"):
-			self.f = fuzzy_funcs.y_func(self.U, self.a, self.b, self.c)
+			self.f = fuzzy_funcs.y_func(self.U, self.a, self.b)
 		elif (type == "L"):
-			self.f = fuzzy_funcs.L_func(self.U, self.a, self.b, self.c)
+			self.f = fuzzy_funcs.L_func(self.U, self.a, self.b)
 		elif (type == "PI"):
 			self.f = fuzzy_funcs.PI_func(self.U, self.a, self.b, self.c)
 		else:
-			print("None")
+			self.f = []
+			for i in self.U:
+				a = a + 0.000001
+				v = ((i+b)/(a))**c
+				self.f.append(1/(1+v))
 			
 	def init_params(self):
 		self.height = max(self.f)
@@ -30,10 +34,11 @@ class exemple(object):
 		
 	def alpha_cut(self):
 		#бежим по множеству значений, если меньше альфы - 0, если больше либо равно = значению в точке
+		pass
 			
 	def plot(self):
 		graph = plt.plot(self.U, self.f)
-		grid1 = plt.grid(True)   # линии вспомогательной сетки
+		grid1 = plt.grid(True)	 # линии вспомогательной сетки
 		
 		
 	def kvant(self, type, f2 = None):

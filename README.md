@@ -30,4 +30,5 @@ your_fuzzy_set.plot_show()
 
 # TODO List:
 - Determination of the remaining parameters and properties of the set
-- And so on... :)
+- Finish documentation
+- Expand the list of methods

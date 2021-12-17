@@ -2,10 +2,13 @@ import fuzzy_funcs
 import math as m
 import matplotlib.pyplot as plt
 
-class exemple(object):
-	def __init__(self, type, U1, U2, a, b, c, epsilon = 1):
+class fuzzy_set(object):
+	def __init__(self, type = "Empty", U1 = None, U2 = None, a = None, b = None, c = None, epsilon = 1, U = None):
 		#init of params
-		self.U = fuzzy_funcs.generate_U(U1, U2, epsilon)
+		if((U1 != None) and (U2 != None)):
+			self.U = fuzzy_funcs.generate_U(U1, U2, epsilon)
+		else:
+			self.U = U
 		self.a = a
 		self.b = b
 		self.c = c
@@ -21,6 +24,8 @@ class exemple(object):
 			self.f = fuzzy_funcs.L_func(self.U, self.a, self.b)
 		elif (type == "PI"):
 			self.f = fuzzy_funcs.PI_func(self.U, self.a, self.b, self.c)
+		elif (type == "Empty"):
+			self.f = []
 		else:
 			self.f = []
 			for i in self.U:
@@ -29,8 +34,7 @@ class exemple(object):
 				self.f.append(1/(1+v))
 			
 	def init_params(self):
-		self.height = max(self.f)
-		#self.sup = #диапозон
+		self.height = max(self.f)#self.sup = #диапозон
 		
 	def alpha_cut(self):
 		#бежим по множеству значений, если меньше альфы - 0, если больше либо равно = значению в точке
@@ -39,6 +43,10 @@ class exemple(object):
 	def plot(self):
 		graph = plt.plot(self.U, self.f)
 		grid1 = plt.grid(True)	 # линии вспомогательной сетки
+	
+	def plot_scatter(self):
+		graph = plt.scatter(self.U, self.f, marker='o')
+		grid1 = plt.grid(True)
 		
 		
 	def kvant(self, type, f2 = None):
@@ -46,6 +54,7 @@ class exemple(object):
 			self.f = not_a(self.f)
 		elif (type == "very"):
 			self.f = very_a(self.f)
+			print(self.f)
 		elif (type == "MOL"):
 			self.f = MOL_a(self.f)
 		elif (type == "or"):

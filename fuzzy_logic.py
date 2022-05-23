@@ -1,3 +1,8 @@
+'''
+This is the main library file. 
+The fuzzy set class and quantifiers are described here.
+'''
+
 import fuzzy_funcs
 import math as m
 import matplotlib.pyplot as plt
@@ -5,6 +10,7 @@ import matplotlib.pyplot as plt
 class fuzzy_set(object):
 	def __init__(self, type = "Empty", U1 = None, U2 = None, a = None, b = None, c = None, epsilon = 1, U = None):
 		#init of params
+		#U1 and U2 its definition set bounds
 		if((U1 != None) and (U2 != None)):
 			self.U = fuzzy_funcs.generate_U(U1, U2, epsilon)
 		else:
@@ -13,6 +19,7 @@ class fuzzy_set(object):
 		self.b = b
 		self.c = c
 		self.type = type
+		
 		#init func
 		if (type == "S"):
 			self.f = fuzzy_funcs.S_func(self.U, self.a, self.b, self.c)
@@ -29,20 +36,28 @@ class fuzzy_set(object):
 		else:
 			self.f = []
 			for i in self.U:
-				a = a + 0.000001
-				v = ((i+b)/(a))**c
+				try:
+					v = ((i+b)/(a))**c
+				except:					#if zero zero div
+					v = ((i+b)/(a+0.00001))**c
 				self.f.append(1/(1+v))
 			
 	def init_params(self):
-		self.height = max(self.f)#self.sup = #диапозон
+		self.height = max(self.f)
+		self.sup = set(self.f)
 		
-	def alpha_cut(self):
-		#бежим по множеству значений, если меньше альфы - 0, если больше либо равно = значению в точке
-		pass
+	def alpha_cut(self, alpha):
+		#go through the set of values, if less than alpha - 0, if greater or equal - value at point
+		self.f_alpha = []
+		for i in self.f:
+			if(i >= alpha):
+				self.f_alpha.append(i)
+			else:
+				self.f_alpha.append(0)
 			
 	def plot(self):
 		graph = plt.plot(self.U, self.f)
-		grid1 = plt.grid(True)	 # линии вспомогательной сетки
+		grid1 = plt.grid(True)
 	
 	def plot_scatter(self):
 		graph = plt.scatter(self.U, self.f, marker='o')
@@ -59,7 +74,7 @@ class fuzzy_set(object):
 			self.f = MOL_a(self.f)
 		elif (type == "or"):
 			b = f2.f
-			marker = 0
+			marker = 0 #if sets have different sizes, then comparisons will occur on a smaller
 			self.f, marker = a_or_b(self.f, b)
 			if(marker == 1):
 				self.U = f2.U
@@ -72,29 +87,29 @@ class fuzzy_set(object):
 		else:
 			print("None")
 			
-def plot_show():
+def show():
 	plt.show()
 	
-def not_a (U):
+def not_a(U):
 	a = []
 	for el in U:
 		a.append(1 - el)
 	return a
 	
-def very_a (U):
+def very_a(U):
 	a = []
 	for el in U:
 		a.append(el**2)
 	return a
 	
-def MOL_a (U):
+def MOL_a(U):
 	#more or less
 	a = []
 	for el in U:
 		a.append(m.sqrt(el))
 	return a
 	
-def a_or_b (U1, U2):
+def a_or_b(U1, U2):
 	a = []
 	i = 0
 	marker = 0
@@ -104,11 +119,14 @@ def a_or_b (U1, U2):
 		U2 = c
 		marker = 1
 	for el in U1:
-		a.append(max(el, U2[i]))
+		try:
+			a.append(min(el, U2[i]))
+		except:					#if went beyond the function definition
+			a.append(0)
 		i+=1
 	return a, marker
 	
-def a_and_b (U1, U2):
+def a_and_b(U1, U2):
 	a = []
 	i = 0
 	marker = 0
@@ -118,6 +136,9 @@ def a_and_b (U1, U2):
 		U2 = c
 		marker = 1
 	for el in U1:
-		a.append(min(el, U2[i]))
+		try:
+			a.append(min(el, U2[i]))
+		except:
+			a.append(0)
 		i+=1
 	return a, marker

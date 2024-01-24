@@ -1,12 +1,6 @@
-'''
-This is a description of fuzzy logic functions.
-5 functions of a different class and the creation of a universal set (a series of numbers from number a to number b with a given step length).
-You can read more about functions on Wikipedia - https://en.wikipedia.org/wiki/Membership_function_(mathematics)
-'''
-
-def S_func(U, a = None, b = None, c = None):
+def s_func (U, a = None, b = None, c = None):
     S = []
-	#init param if if they are not given
+
     if(a == None):
         a = U.min()
     if(c == None):
@@ -27,10 +21,10 @@ def S_func(U, a = None, b = None, c = None):
             S.append(1)
     return S
 
-def PI_func(U, a = None, b = None, c = None):
+def pi_func (U, a = None, b = None, c = None):
     PI_1 = []
     PI_2 = []
-	#init param if if they are not given
+
     if(a == None):
         a = U.min()
     if(c == None):
@@ -38,7 +32,7 @@ def PI_func(U, a = None, b = None, c = None):
     if(b == None):
         b = (a+c)/2
 	
-    for x in U:			#need to optimize
+    for x in U:	
         if(x < c):
             X = [x]
             el = S_func(X, c-b, c-(b/2), c)
@@ -51,9 +45,9 @@ def PI_func(U, a = None, b = None, c = None):
             
     return(PI_1 + PI_2)
     
-def t_func(U, a = None, b = None, c = None):
+def t_func (U, a = None, b = None, c = None):
     t = []
-	#init param if if they are not given
+
     if(a == None):
         a = U.min()
     if(c == None):
@@ -65,18 +59,16 @@ def t_func(U, a = None, b = None, c = None):
         if(x < a):
             t.append(0)
         elif((x >= a) and (x < b)):
-            j = (x-a)/(b-a)
-            t.append(j)
+            t.append((x-a)/(b-a))
         elif((x >= b) and (x < c)):
-            j = (c-x)/(c-b)
-            t.append(j)
+            t.append((c-x)/(c-b))
         elif(x >= c):
             t.append(0)
     return t
     
-def y_func(U, a = None, b = None):
+def y_func (U, a = None, b = None):
     y = []
-	#init param if if they are not given
+
     if(a == None):
         a = U.min()
     if(b == None):
@@ -86,15 +78,14 @@ def y_func(U, a = None, b = None):
         if(x < a):
             y.append(0)
         elif((x >= a) and (x <= b)):
-            j = (x-a)/(b-a)
-            y.append(j)
+            y.append((x-a)/(b-a))
         elif(x > b):
             y.append(1)
     return y
     
-def L_func(U, a = None, b = None):
+def l_func (U, a = None, b = None):
     L = []
-	#init param if if they are not given
+
     if(a == None):
         a = U.min()
     if(b == None):
@@ -104,16 +95,15 @@ def L_func(U, a = None, b = None):
         if(x < a):
             L.append(1)
         elif((x >= a) and (x <= b)):
-            j = (b-x)/(b-a)
-            L.append(j)
+            L.append((b-x)/(b-a))
         elif(x > b):
             L.append(0)
     return L
 	
-def generate_U (a = 0, b = 10, epsilon = 0): 		#epsilon as step(accuracy)
+def generate_U (a = 0, b = 10, epsilon = 0):
         U = []
 	step = 10**epsilon
         for i in range(a*step, b*step):
             U.append(i/step)
-        U.append(b/1.0)    				#last elem (float)
+        U.append(b/1.0)
         return U

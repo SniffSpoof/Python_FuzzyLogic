@@ -1,109 +1,113 @@
-def s_func (U, a = None, b = None, c = None):
-    S = []
+def s_func(U, a=None, b=None, c=None):
+    s = []
 
-    if(a == None):
+    if a is None:
         a = U.min()
-    if(c == None):
+    if c is None:
         c = U.max()
-    if(b == None):
-        b = (a+c)/2
-    
+    if b is None:
+        b = (a + c) / 2
+
     for x in U:
-        if(x < a):
-            S.append(0)
-        elif((x >= a) and (x < b)):
-            j = 2*((x-a)/(c-a)**2)
-            S.append(j)
-        elif((x >= b) and (x < c)):
-            j = 2*((x-c)/(c-a)**2)
-            S.append(1 - j)
-        elif(x >= c):
-            S.append(1)
-    return S
+        if x < a:
+            s.append(0)
+        elif (x >= a) and (x < b):
+            j = 2 * ((x - a) / (c - a) ** 2)
+            s.append(j)
+        elif (x >= b) and (x < c):
+            j = 2 * ((x - c) / (c - a) ** 2)
+            s.append(1 - j)
+        elif x >= c:
+            s.append(1)
+    return s
 
-def pi_func (U, a = None, b = None, c = None):
-    PI_1 = []
-    PI_2 = []
 
-    if(a == None):
+def pi_func(U, a=None, b=None, c=None):
+    pi_1 = []
+    pi_2 = []
+
+    if a is None:
         a = U.min()
-    if(c == None):
+    if c is None:
         c = U.max()
-    if(b == None):
-        b = (a+c)/2
-	
-    for x in U:	
-        if(x < c):
+    if b is None:
+        b = (a + c) / 2
+
+    for x in U:
+        if x < c:
             X = [x]
-            el = S_func(X, c-b, c-(b/2), c)
-            PI_1.append(el[0]) 
-            
-        elif(x >= c):
+            el = s_func(X, c - b, c - (b / 2), c)
+            pi_1.append(el[0])
+
+        elif x >= c:
             X = [x]
-            el = S_func(X, c, c + (b/2), c+b)
-            PI_2.append(1 - el[0])
-            
-    return(PI_1 + PI_2)
-    
-def t_func (U, a = None, b = None, c = None):
+            el = s_func(X, c, c + (b / 2), c + b)
+            pi_2.append(1 - el[0])
+
+    return pi_1 + pi_2
+
+
+def t_func(U, a=None, b=None, c=None):
     t = []
 
-    if(a == None):
+    if a is None:
         a = U.min()
-    if(c == None):
+    if c is None:
         c = U.max()
-    if(b == None):
-        b = (a+c)/2
-    
+    if b is None:
+        b = (a + c) / 2
+
     for x in U:
-        if(x < a):
+        if x < a:
             t.append(0)
-        elif((x >= a) and (x < b)):
-            t.append((x-a)/(b-a))
-        elif((x >= b) and (x < c)):
-            t.append((c-x)/(c-b))
-        elif(x >= c):
+        elif (x >= a) and (x < b):
+            t.append((x - a) / (b - a))
+        elif (x >= b) and (x < c):
+            t.append((c - x) / (c - b))
+        elif x >= c:
             t.append(0)
     return t
-    
-def y_func (U, a = None, b = None):
+
+
+def y_func(U, a=None, b=None):
     y = []
 
-    if(a == None):
+    if a is None:
         a = U.min()
-    if(b == None):
+    if b is None:
         b = U.max()
-        
+
     for x in U:
-        if(x < a):
+        if x < a:
             y.append(0)
-        elif((x >= a) and (x <= b)):
-            y.append((x-a)/(b-a))
-        elif(x > b):
+        elif (x >= a) and (x <= b):
+            y.append((x - a) / (b - a))
+        elif x > b:
             y.append(1)
     return y
-    
-def l_func (U, a = None, b = None):
-    L = []
 
-    if(a == None):
+
+def l_func(U, a=None, b=None):
+    l = []
+
+    if a is None:
         a = U.min()
-    if(b == None):
+    if b is None:
         b = U.max()
-        
+
     for x in U:
-        if(x < a):
-            L.append(1)
-        elif((x >= a) and (x <= b)):
-            L.append((b-x)/(b-a))
-        elif(x > b):
-            L.append(0)
-    return L
-	
-def generate_U (a = 0, b = 10, epsilon = 0):
-        U = []
-	step = 10**epsilon
-        for i in range(a*step, b*step):
-            U.append(i/step)
-        U.append(b/1.0)
-        return U
+        if x < a:
+            l.append(1)
+        elif (x >= a) and (x <= b):
+            l.append((b - x) / (b - a))
+        elif x > b:
+            l.append(0)
+    return l
+
+
+class Universum(object):
+    def __init__(self, l=0, r=10, epsilon=0):
+        self.u = []
+        step = 10 ** epsilon
+        for i in range(l * step, (r+1) * step):
+            self.u.append(i / step)

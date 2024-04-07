@@ -1,0 +1,56 @@
+def not_a(U):
+    a = []
+    for el in U:
+        a.append(1 - el)
+    return a
+
+
+def very_a(U):
+    a = []
+    for el in U:
+        a.append(el ** 2)
+    return a
+
+
+def mol_a(U):
+    # more or less
+    a = []
+    for el in U:
+        a.append(el**0.5)
+    return a
+
+
+def a_or_b(U1, U2):
+    a = []
+    i = 0
+    marker = 0
+    if len(U1) > len(U2):
+        c = U1
+        U1 = U2
+        U2 = c
+        marker = 1
+    for el in U1:
+        try:
+            a.append(min(el, U2[i]))
+        except:  # if went beyond the function definition
+            a.append(0)
+        i += 1
+    return a, marker
+
+
+def a_and_b(U1, U2):
+    a = []
+    i = 0
+    marker = 0
+    if len(U1) > len(U2):
+        c = U1
+        U1 = U2
+        U2 = c
+        marker = 1
+    for el in U1:
+        try:
+            a.append(max(el, U2[i]))
+        except:
+            a.append(0)
+        i += 1
+    return a, marker
